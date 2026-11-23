@@ -6,10 +6,6 @@ import org.kpfl.model.person.LeagueCommissioner;
 import org.kpfl.service.ReportService;
 import org.kpfl.storage.FilePersistenceManager;
 
-/**
- * Main application launcher for the Kingston Premier Football League System.
- * Supports both interactive live console input and automated demonstration mode.
- */
 public class MainApplication {
 
     private static final String DATA_DIR = "./data";
@@ -17,7 +13,7 @@ public class MainApplication {
     public static void main(String[] args) {
         System.out.println("=============================================================");
         System.out.println("   KINGSTON PREMIER FOOTBALL LEAGUE (KPFL) SYSTEM");
-        System.out.println("                 Eclipse & Java OOP Project");
+        System.out.println("            Match-Day Management Application");
         System.out.println("=============================================================\n");
 
         FootballLeague league = new FootballLeague("Kingston Premier Football League", "2026/2027");

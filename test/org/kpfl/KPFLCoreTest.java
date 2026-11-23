@@ -40,36 +40,36 @@ public class KPFLCoreTest {
     }
 
     @Test
-    @DisplayName("Teacher Pattern: Default, Copy, and Primary Constructors & toString Layout")
-    void testTeacherCodeStructure() throws Exception {
-        // 1. Default constructor
+    @DisplayName("Verify Default, Copy, and Parameterized Constructors")
+    void testConstructorsAndToString() throws Exception {
+        // Default constructor
         Player pDefault = new Player();
         assertEquals("", pDefault.getId());
         assertEquals("Unassigned", pDefault.getPosition());
         assertEquals('?', pDefault.getGender());
 
-        // 2. Primary constructor
+        // Primary constructor
         Player pPrimary = new Player("PLY-09", "Leon Bailey", 27, 'M', "Forward", 7);
         assertEquals("PLY-09", pPrimary.getId());
         assertEquals("Leon Bailey", pPrimary.getName());
         assertEquals(7, pPrimary.getJerseyNumber());
         assertEquals('M', pPrimary.getGender());
 
-        // 3. Copy constructor
+        // Copy constructor
         Player pCopy = new Player(pPrimary);
         assertEquals(pPrimary.getId(), pCopy.getId());
         assertEquals(pPrimary.getName(), pCopy.getName());
         assertEquals(pPrimary.getJerseyNumber(), pCopy.getJerseyNumber());
         assertEquals(pPrimary.getGender(), pCopy.getGender());
 
-        // 4. Multi-line toString() format verification (Teacher's Pet.java style)
+        // toString format check
         String pStr = pPrimary.toString();
         assertTrue(pStr.contains("Player ID: PLY-09"));
         assertTrue(pStr.contains("Name: Leon Bailey"));
         assertTrue(pStr.contains("Gender: M"));
         assertTrue(pStr.contains("Position: Forward"));
 
-        // 5. Product Default, Copy, and Primary
+        // Product copy check
         Merchandise mOrig = new Merchandise("M-01", "Match Jersey", 4500.00, 20, "L", "Apparel");
         Merchandise mCopy = new Merchandise(mOrig);
         assertEquals(mOrig.getProductId(), mCopy.getProductId());

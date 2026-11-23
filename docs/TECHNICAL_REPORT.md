@@ -1,123 +1,101 @@
 # Kingston Premier Football League (KPFL) & Match-Day Management System
-## Technical Architecture & Implementation Report
+## Technical Report & System Design
 
 ---
 
-## 1. System Overview & Architectural Objectives
-The Kingston Premier Football League (KPFL) and Match-Day Management System is an enterprise-grade Object-Oriented software solution developed in **Java** (SE 17+) and packaged for the **Eclipse IDE**. The system fulfills the operational, administrative, and financial demands of football league governance within the parish of Kingston, Jamaica.
+## 1. Project Overview
+The Kingston Premier Football League (KPFL) Match-Day Management System is an Object-Oriented Java application developed for the 6-week OOP project. The system manages football clubs, player rosters, stadium venues, fixture schedules, match scores, ticketing, stadium shop transactions (including 15% Jamaican GCT), persistent file storage, and management reports.
 
-### Core Architecture Pillars:
-1. **Object-Oriented Integrity:** Full realization of Abstraction, Encapsulation, Polymorphism, and Multi-Level Inheritance.
-2. **Defensive Domain Engineering:** Custom exception hierarchies preventing unlawful league states.
-3. **Financial Compliance:** Strict accounting of subtotal, 15% General Consumption Tax (GCT), cash tender validation, and itemized receipt generation.
-4. **Persistent File I/O:** Sequential access text file storage resilient to formatting corruption.
-5. **Regulatory Analytics:** Automated generation of multi-metric league standings, match-day financial audits, and regulatory compliance reports with CSV export capabilities.
+### Key Implementation Goals:
+1. **Object-Oriented Design:** Proper use of Abstraction, Encapsulation, Inheritance, and Polymorphism.
+2. **Business Rules & Exceptions:** Using custom exceptions to handle invalid data and competition rule violations.
+3. **Financial Calculations:** Accurate calculation of subtotals, 15% GCT, cash payments, change, and receipt generation.
+4. **File Persistence:** Saving and reloading data using sequential text files.
+5. **Reporting:** Generating formatted standings tables, financial summaries, and compliance audit reports, with CSV export.
 
 ---
 
-## 2. Object-Oriented Design & Principles Applied
+## 2. Object-Oriented Design
 
 ### 2.1 Abstraction
-Abstraction eliminates redundancy and provides rigid behavioral contracts:
-* **`Person` (Abstract Class):** Encapsulates core personal identity (`id`, `name`, `age`, `gender`) and declares the abstract method `public abstract String getDetails()`. Concrete instantiations are prevented.
-* **`Product` (Abstract Class):** Models shop inventory items (`productId`, `name`, `unitPrice`, `stockQuantity`) and declares `public abstract String getProductSummary()`. Enforces uniform pricing formulas (`calculateSubtotal`, `calculateGCT`, `calculateTotalWithTax`).
+* **`Person` (Abstract Class):** Holds common attributes (`id`, `name`, `age`, `gender`) and defines the abstract method `public abstract String getDetails()`.
+* **`Product` (Abstract Class):** Represents items sold in the stadium shop (`productId`, `name`, `unitPrice`, `stockQuantity`) and defines `public abstract String getProductSummary()`. Contains common pricing methods for calculating tax and totals.
 
 ### 2.2 Inheritance
-The system implements two distinct class hierarchies:
-1. **Personnel Hierarchy:**
-   * `Person` $\rightarrow$ `Player` (adds `jerseyNumber`, `position`, `goalsScored`, `playingStatus`)
-   * `Person` $\rightarrow$ `Coach` (adds `qualification`, `coachingRole`, `teamAssignment`)
-   * `Person` $\rightarrow$ `MatchOfficial` (adds `officiatingRole`, `rank`, `isAvailable`)
-   * `Person` $\rightarrow$ `LeagueCommissioner` (adds `accreditationCode`)
-   * `Person` $\rightarrow$ `Spectator` (adds `seatCategoryPreference`)
-2. **Shop Merchandise Hierarchy:**
-   * `Product` $\rightarrow$ `Merchandise` (adds `size`, `category`)
-   * `Product` $\rightarrow$ `FoodItem` (adds `expirationDate`, `isVegetarian`)
+Two main class hierarchies are implemented:
+1. **Person Hierarchy:**
+   * `Person` -> `Player` (adds position, jersey number, goals, playing status)
+   * `Person` -> `Coach` (adds qualification, coaching role, team assignment)
+   * `Person` -> `MatchOfficial` (adds officiating role, rank tier, availability)
+   * `Person` -> `LeagueCommissioner` (adds accreditation code)
+   * `Person` -> `Spectator` (adds preferred seating category)
+2. **Product Hierarchy:**
+   * `Product` -> `Merchandise` (adds size and apparel category)
+   * `Product` -> `FoodItem` (adds expiration date and vegetarian flag)
 
 ### 2.3 Polymorphism
-Dynamic method dispatch is utilized throughout the system:
-* In `Person.getDetails()`, calling `getDetails()` on a collection of `Person` references dynamically executes the specific formatting logic of a `Player`, `Coach`, or `MatchOfficial`.
-* In `Product.getProductSummary()`, diverse catalog items are displayed uniformly while revealing subclass-specific details (e.g., sizes for jerseys vs. expiration dates for meat patties).
+* `Person.getDetails()` and `display()`: When called on a list of `Person` objects, each person displays their specific role information.
+* `Product.getProductSummary()`: Displays specific product details depending on whether the item is merchandise or food.
 
-### 2.4 Encapsulation & Data Validation
-All entity attributes maintain `private` or `protected` visibility. Access is regulated via accessors and mutators that validate arguments defensively:
-* Player ages are verified against `MINIMUM_LEAGUE_AGE` (16 years).
-* Jersey numbers must be integers between 1 and 99 with uniqueness enforced per squad.
-* All financial figures, quantities, and match scores are validated as non-negative numbers.
+### 2.4 Encapsulation & Validation
+All instance variables are declared `private` or `protected`. Public getters and setters enforce data rules:
+* Player age must be 16 or older.
+* Jersey numbers must be between 1 and 99 and unique per team.
+* Scores, prices, and quantities cannot be negative.
 
-### 2.5 Object Relationships (Aggregation vs. Composition)
-* **Aggregation (`FootballTeam` $\diamond$-- `Player`):** Players exist independently of clubs. When a club disbands, player objects remain intact and can transfer.
-* **Composition (`FootballLeague` $\blacklozenge$-- `FootballTeam`):** League administration strictly bounds club charters.
-* **Composition (`Fixture` $\blacklozenge$-- `MatchResult`):** A match result has no standalone existence outside of the fixture in which it was contested.
-* **Composition (`Stadium` $\blacklozenge$-- `StadiumShop`):** The concession shop is an integral physical component of the stadium venue.
-* **Association (`Fixture` $\rightarrow$ `FootballTeam` / `Stadium` / `MatchOfficial`):** Fixtures reference clubs and referees to coordinate events without taking ownership of their lifecycles.
+### 2.5 Class Relationships
+* **Aggregation (`FootballTeam` and `Player`):** A team has players, but players exist independently and can be traded or released.
+* **Composition (`Fixture` and `MatchResult`):** A match result belongs strictly to its fixture and cannot exist without it.
+* **Composition (`Stadium` and `StadiumShop`):** The stadium shop is a permanent facility within the stadium venue.
+* **Association (`Fixture` and `FootballTeam` / `Stadium` / `MatchOfficial`):** Fixtures link two teams, a stadium venue, and assigned officials.
 
 ---
 
-## 3. Mandatory Business Rules & Custom Exception Design
+## 3. Business Rules and Custom Exceptions
 
-```mermaid
-graph TD
-    Exception["java.lang.Exception"]
-    KPFLException["KPFLException (Base Checked Exception)"]
-    Exception --> KPFLException
-
-    KPFLException --> TeamIneligibleException["TeamIneligibleException (BR-01)"]
-    KPFLException --> SchedulingConflictException["SchedulingConflictException (BR-02)"]
-    KPFLException --> OfficialUnavailableException["OfficialUnavailableException (BR-03)"]
-    KPFLException --> CapacityExceededException["CapacityExceededException (BR-04)"]
-    KPFLException --> InvalidValueException["InvalidValueException (BR-05)"]
-    KPFLException --> PlayerAgeRequirementException["PlayerAgeRequirementException (BR-06)"]
-    KPFLException --> InsufficientFundsException["InsufficientFundsException (BR-07)"]
-    KPFLException --> InvalidFixtureStateException["InvalidFixtureStateException (BR-08)"]
-```
-
-| Rule ID | Constraint Description | Enforcing Exception | Architectural Layer |
+| Rule | Constraint | Exception | Where Handled |
 |---|---|---|---|
-| **BR-01** | Unregistered or suspended teams cannot be scheduled. | `TeamIneligibleException` | `FixtureService` / `Fixture` |
-| **BR-02** | Team cannot participate in two fixtures at same day/time. | `SchedulingConflictException` | `FootballLeague.scheduleFixture()` |
-| **BR-03** | Match official cannot be assigned to conflicting fixtures. | `OfficialUnavailableException` | `Fixture.assignOfficial()` |
+| **BR-01** | Unregistered or suspended teams cannot be scheduled. | `TeamIneligibleException` | `FootballLeague.scheduleFixture()` |
+| **BR-02** | A team cannot play two matches on the same date and time. | `SchedulingConflictException` | `FootballLeague.scheduleFixture()` |
+| **BR-03** | An official cannot be assigned to conflicting matches. | `OfficialUnavailableException` | `Fixture.assignOfficial()` |
 | **BR-04** | Ticket sales cannot exceed stadium seating capacity. | `CapacityExceededException` | `Stadium.allocateTickets()` |
-| **BR-05** | Match scores, stock quantities, and prices cannot be negative. | `InvalidValueException` | Model Constructors & Mutators |
-| **BR-06** | Players must satisfy league minimum-age requirement ($\ge 16$). | `PlayerAgeRequirementException` | `Player` / `FootballTeam.addPlayer()` |
-| **BR-07** | A sale cannot complete if payment tendered is insufficient. | `InsufficientFundsException` | `StadiumShop.processSale()` |
-| **BR-08** | Fixture cannot be marked completed without valid score. | `InvalidFixtureStateException` | `Fixture.recordResultAndComplete()` |
+| **BR-05** | Scores, stock, and prices cannot be negative. | `InvalidValueException` | Model Setters and Constructors |
+| **BR-06** | Players must be at least 16 years old. | `PlayerAgeRequirementException` | `Player` and `FootballTeam.addPlayer()` |
+| **BR-07** | Payment tendered must be greater than or equal to total with 15% GCT. | `InsufficientFundsException` | `StadiumShop.processSale()` |
+| **BR-08** | A fixture cannot be marked completed without valid scores. | `InvalidFixtureStateException` | `Fixture.recordResultAndComplete()` |
 
 ---
 
-## 4. Financial Calculations & GCT Accounting
+## 4. Financial Calculations & GCT
 
-Match-day financial accounting adheres to the Jamaican General Consumption Tax (GCT) statutory rate:
+All match-day sales (tickets and shop concessions) include Jamaica's 15% General Consumption Tax (GCT):
+* `Subtotal = Unit Price * Quantity`
+* `GCT = Subtotal * 0.15`
+* `Grand Total = Subtotal + GCT`
+* `Change = Amount Tendered - Grand Total`
 
-$$\text{Subtotal} = \sum_{i=1}^{n} (\text{UnitPrice}_i \times \text{Quantity}_i)$$
-$$\text{GCT} = \text{Subtotal} \times 0.15$$
-$$\text{Grand Total} = \text{Subtotal} + \text{GCT}$$
-$$\text{Change} = \text{AmountTendered} - \text{Grand Total}$$
-
-If $\text{AmountTendered} < \text{Grand Total}$, the transaction aborts and throws `InsufficientFundsException`. When approved, stock levels decrease and an itemized receipt is generated.
-
----
-
-## 5. Persistence Subsystem Design
-
-Data persistence utilizes sequential text files with pipe (`|`) delimiters. This ensures:
-1. Instant human inspection during academic defense and grading.
-2. Resilience against delimiter collisions with club names or descriptions.
-3. Fault-tolerant loading: corrupted individual records log warnings rather than crashing the system.
-
-### File Schema Matrix
-* `teams.txt`: `RegistrationNumber|Name|Parish|SquadSize|Status|MatchesPlayed|Wins|Draws|Losses|GoalsFor|GoalsAgainst|Points`
-* `players.txt`: `PersonId|Name|Age|Gender|TeamRegNo|Position|JerseyNumber|GoalsScored|PlayingStatus`
-* `stadiums.txt`: `StadiumId|Name|Location|SeatingCapacity|TicketsSold|FieldCondition|BaseTicketPrice`
-* `fixtures.txt`: `FixtureId|HomeTeamRegNo|AwayTeamRegNo|StadiumId|Date|Time|Status|HomeScore|AwayScore`
-* `products.txt`: `ProductId|Type|Name|Price|Stock|Detail1|Detail2`
+If payment tendered is less than the grand total, an `InsufficientFundsException` is thrown and the transaction is cancelled.
 
 ---
 
-## 6. Management Reports & Optional Extensions
+## 5. File Persistence
 
-The system generates three structured analytical management reports:
-1. **KPFL Official Standings Table:** Standard competition ranking (Win = 3, Draw = 1, Loss = 0) with tie-breakers on Goal Difference and Goals For.
-2. **Match-Day Financial & Attendance Audit:** Venue occupancy percentages, ticket sales, 15% GCT breakdown, and concession performance.
-3. **Regulatory Compliance Audit:** Roster age compliance, coaching qualifications, and official availability.
-* **Optional Extension (Section 15):** The system integrates `CsvExportService`, permitting instant export of all reports into standard CSV files for spreadsheet analytics.
+Data is stored in `./data/` using pipe-delimited text files (`|`). This makes records easy to read, verify, and inspect.
+* `teams.txt`: Team registration, name, parish, record, and points.
+* `players.txt`: Player ID, name, age, gender, team, position, jersey, goals, status.
+* `stadiums.txt`: Stadium ID, name, location, capacity, tickets sold, condition, price.
+* `fixtures.txt`: Fixture ID, teams, venue, date, time, status, scores.
+* `products.txt`: Product ID, type, name, price, stock, specific attributes.
+
+The `FilePersistenceManager` class handles saving and reloading all data. If an individual line in a file has bad formatting, it logs a warning and continues loading the rest of the file without crashing.
+
+---
+
+## 6. Management Reports & CSV Export
+
+The system generates three management reports:
+1. **KPFL League Table:** Displays games played, wins, draws, losses, goals for, goals against, goal difference, and points.
+2. **Financial & Attendance Audit:** Shows venue capacity, tickets sold, occupancy rate, ticket revenues, shop revenues, and total 15% GCT collected.
+3. **Compliance Audit:** Verifies squad sizes, player age compliance, coach qualifications, and referee availability.
+
+An optional CSV export feature saves these reports to `./data/reports/` for viewing in Microsoft Excel or Google Sheets.

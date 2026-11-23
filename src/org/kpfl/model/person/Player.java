@@ -34,7 +34,7 @@ public class Player extends Person {
 		super(id, name, age, gender);
 		if (age < MINIMUM_LEAGUE_AGE) {
 			throw new PlayerAgeRequirementException(
-				String.format("Player %s is %d years old. League minimum age is %d.", name, age, MINIMUM_LEAGUE_AGE)
+				"Player " + name + " is " + age + " years old. Minimum age is " + MINIMUM_LEAGUE_AGE + "."
 			);
 		}
 		if (jerseyNumber < 1 || jerseyNumber > 99) {

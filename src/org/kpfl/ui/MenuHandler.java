@@ -13,13 +13,6 @@ import org.kpfl.service.CsvExportService;
 import org.kpfl.service.ReportService;
 import org.kpfl.storage.FilePersistenceManager;
 
-/**
- * Standard classroom-style console menu handler.
- * Implements canonical do-while navigation, modular submenus, and input validation helpers.
- * 
- * @author KPFL Development Team
- * @version 1.0
- */
 public class MenuHandler {
 
     private FootballLeague league;
@@ -31,9 +24,6 @@ public class MenuHandler {
         this.scanner = scanner;
     }
 
-    /**
-     * Main menu loop using standard do-while structure.
-     */
     public void start() {
         int choice = -1;
         do {
@@ -60,10 +50,10 @@ public class MenuHandler {
                     handlePersistenceSubMenu();
                     break;
                 case 0:
-                    System.out.println("\nExiting Kingston Premier Football League Management System. Goodbye!");
+                    System.out.println("\nExiting system. Goodbye!");
                     break;
                 default:
-                    System.out.println("Invalid selection! Please choose a valid option (0-6).");
+                    System.out.println("Invalid selection! Please choose an option between 0 and 6.");
             }
         } while (choice != 0);
     }
@@ -71,12 +61,12 @@ public class MenuHandler {
     private void printMainMenu() {
         System.out.println("\n=============================================================");
         System.out.println("  KINGSTON PREMIER FOOTBALL LEAGUE (KPFL) MANAGEMENT SYSTEM  ");
-        System.out.println("                   Main Academic Menu                        ");
+        System.out.println("                         Main Menu                           ");
         System.out.println("=============================================================");
         System.out.println("1. Teams & Personnel Management");
-        System.out.println("2. Stadium & Venue Operations (inc. Practice Sessions)");
+        System.out.println("2. Stadium & Venue Operations");
         System.out.println("3. Fixture Scheduling & Match Operations");
-        System.out.println("4. Match-Day Services (Ticketing & Stadium Shop POS)");
+        System.out.println("4. Match-Day Services (Ticketing & Stadium Shop)");
         System.out.println("5. Management Reports & CSV Analytics");
         System.out.println("6. Persistent Storage (File I/O)");
         System.out.println("0. Exit Application");
@@ -465,7 +455,7 @@ public class MenuHandler {
         } while (choice != 0);
     }
 
-    // Classroom Input Helper Methods
+    // Helper methods for reading inputs
     private int getIntInput(String prompt) {
         while (true) {
             System.out.print(prompt);
