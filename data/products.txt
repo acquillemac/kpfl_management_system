@@ -1,0 +1,8 @@
+PRD-M01|MERCHANDISE|Official KPFL Home Jersey|4500.00|150|L|Apparel
+PRD-M02|MERCHANDISE|Supporters Team Scarf|1800.00|200|One-Size|Memorabilia
+PRD-M03|MERCHANDISE|KPFL Branded Cap|1200.00|120|Standard|Apparel
+PRD-M04|MERCHANDISE|Team Fan Pennant / Flag|800.00|300|Medium|Souvenir
+PRD-F01|FOOD|Tastee Beef Patty|350.00|400|2026-04-20|false
+PRD-F02|FOOD|Vegetable Patty|380.00|150|2026-04-20|true
+PRD-F03|FOOD|Ting Grapefruit Soda (500ml)|250.00|500|2026-09-01|true
+PRD-F04|FOOD|Wata Bottled Natural Spring Water|150.00|600|2027-01-01|true

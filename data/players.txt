@@ -1,0 +1,8 @@
+PLY-101|Andre Blake|33|Male|KPFL-TM-01|Goalkeeper|1|0|ACTIVE
+PLY-102|Javon East|28|Male|KPFL-TM-01|Forward|9|4|ACTIVE
+PLY-103|Kemar Lawrence|31|Male|KPFL-TM-01|Defender|5|0|ACTIVE
+PLY-201|Kemir Kemar|24|Male|KPFL-TM-02|Midfielder|10|3|ACTIVE
+PLY-202|Damion Lowe|30|Male|KPFL-TM-02|Defender|4|1|ACTIVE
+PLY-301|Fabian Reid|32|Male|KPFL-TM-03|Forward|11|5|ACTIVE
+PLY-401|Alex Marshall|25|Male|KPFL-TM-04|Midfielder|7|2|ACTIVE
+PLY-501|Shaniel Thomas|22|Male|KPFL-TM-05|Forward|10|6|ACTIVE

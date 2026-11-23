@@ -1,0 +1,5 @@
+KPFL-TM-01|Harbour View FC|Kingston|22|ACTIVE|5|3|1|1|8|4|10
+KPFL-TM-02|Waterhouse FC|St. Andrew|21|ACTIVE|5|2|2|1|7|5|8
+KPFL-TM-03|Arnett Gardens FC|Kingston|20|ACTIVE|5|2|1|2|6|6|7
+KPFL-TM-04|Portmore United|St. Catherine|23|ACTIVE|5|1|2|2|4|5|5
+KPFL-TM-05|Cavalier SC|Kingston|22|ACTIVE|5|3|0|2|9|7|9

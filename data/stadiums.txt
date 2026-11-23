@@ -1,0 +1,5 @@
+STD-01|National Stadium|Independence Park, Kingston|35000|0|EXCELLENT|1500.00
+STD-02|Harbour View Mini Stadium|Harbour View, Kingston|7000|0|GOOD|1000.00
+STD-03|Anthony Spaulding Sports Complex|Arnett Gardens, Kingston|7000|0|GOOD|1000.00
+STD-04|Ferdie Neita Park|Portmore, St. Catherine|3000|0|FAIR|800.00
+STD-05|Sabina Park|Kingston|20000|0|EXCELLENT|1200.00

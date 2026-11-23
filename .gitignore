@@ -1,0 +1,15 @@
+# Eclipse output folders
+bin/
+*.class
+
+# Temporary test and runtime data
+data_test_temp/
+data/reports/*.csv
+
+# Operating System files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# IDE temporary logs
+*.log
